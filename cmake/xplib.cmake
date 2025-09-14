@@ -7,12 +7,19 @@ MESSAGE(STATUS "Generating X-Plane Scenery Library Project")
 
 FILE(GLOB XPLIB_HEADER_FILES *.h *.hpp)
 FILE(GLOB XPLIB_SOURCE_FILES *.cpp)
+SET(XPLIB_PLATFORM_SOURCES)
+IF(WIN32)
+    LIST(APPEND XPLIB_PLATFORM_SOURCES ${CMAKE_SOURCE_DIR}/xplib/config/X-PlaneSceneryLibrary.rc)
+ENDIF()
+
+# --------------------------------
 
 ADD_LIBRARY(X-PlaneSceneryLibrary
     ${XPLIB_HEADER_FILES}
     ${XPLIB_SOURCE_FILES}
 	${RESOURCE_FILE}
-    X-PlaneSceneryLibrary.rc
+	${XPLIB_PLATFORM_SOURCES}
+
 )
 SOURCE_GROUP("Header Files" FILES
 	${XPLIB_HEADER_FILES}
@@ -22,11 +29,13 @@ SOURCE_GROUP("Source Files" FILES
 )
 SOURCE_GROUP("Resource" FILES
     ${RESOURCE_FILE}
-    X-PlaneSceneryLibrary.rc
+	${XPLIB_PLATFORM_SOURCES}
 )
 SOURCE_GROUP("Tests" FILES
     DebugMain.cpp
 )
+
+# --------------------------------
 
 TARGET_COMPILE_DEFINITIONS(X-PlaneSceneryLibrary
     PUBLIC

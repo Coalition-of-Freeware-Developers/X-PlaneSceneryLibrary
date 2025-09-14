@@ -116,23 +116,6 @@ MESSAGE(STATUS "Beginning project generation for XPSceneryLib")
 MESSAGE(STATUS "=================================================")
 
 # --------------------------------
-# Dependencies
-# --------------------------------
-FIND_PACKAGE(nlohmann_json CONFIG REQUIRED)
-
-# --------------------------------
-# Catch2 (for tests only)
-# --------------------------------
-IF(EDXLIB_BUILD_TESTS)
-	FIND_PACKAGE(Catch2 3 CONFIG QUIET)
-	IF(NOT Catch2_FOUND AND EDXLIB_VENDOR_DEPS)
-		IF(NOT TARGET Catch2::Catch2)
-		ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/dependency/Catch2 EXCLUDE_FROM_ALL)
-    	ENDIF()
-  	ENDIF()
-ENDIF()
-
-# --------------------------------
 # TESTS
 # --------------------------------
 IF(XP_SCENERY_LIB_BUILD_TESTS)
@@ -141,12 +124,12 @@ IF(XP_SCENERY_LIB_BUILD_TESTS)
 ENDIF()
 
 # --------------------------------
-# ADD XPSceneryLib LIBRARY
+# ADD X-PlaneScenery LIBRARY
 # --------------------------------
 INCLUDE(cmake/xplib.cmake)
 
 # --------------------------------
-# Platform compile definitions for XPSceneryLib
+# Platform compile definitions for X-PlaneScenery
 # --------------------------------
 ## Public include dirs for build/install usage
 IF(TARGET XPSceneryLib)
