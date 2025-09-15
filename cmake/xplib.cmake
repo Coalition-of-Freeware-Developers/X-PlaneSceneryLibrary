@@ -5,25 +5,35 @@
 MESSAGE(STATUS "=================================================")
 MESSAGE(STATUS "Generating X-Plane Scenery Library Project")
 
-IF(WIN32)
-    LIST(APPEND XPLIB_PLATFORM_SOURCES ${CMAKE_SOURCE_DIR}/xplib/config/X-PlaneSceneryLibrary.rc)
-ENDIF()
 SET(XPLIB_PLATFORM_SOURCES)
-FILE(GLOB XPLIB_HEADER_FILES *.h *.hpp)
-FILE(GLOB XPLIB_SOURCE_FILES *.cpp)
+IF(WIN32)
+    LIST(APPEND XPLIB_PLATFORM_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/xplib/config/X-PlaneSceneryLibrary.rc)
+ENDIF()
+
+# Discover headers and sources from project subfolders
+FILE(GLOB_RECURSE XPLIB_HEADER_FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/xplib/includes/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/xplib/includes/*.hpp"
+)
+FILE(GLOB_RECURSE XPLIB_SOURCE_FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/xplib/src/*.cpp"
+)
 
 # --------------------------------
 
-ADD_LIBRARY(X-PlaneSceneryLibrary
+ADD_LIBRARY(XPSceneryLib
     ${XPLIB_HEADER_FILES}
     ${XPLIB_SOURCE_FILES}
-	${RESOURCE_FILE}
 	${XPLIB_PLATFORM_SOURCES}
 
 )
 
 # Use project-wide C++20 standard (required for <format> etc.)
-SET_TARGET_PROPERTIES(X-PlaneSceneryLibrary PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED YES)
+SET_TARGET_PROPERTIES(XPSceneryLib PROPERTIES
+    CXX_STANDARD 20
+    CXX_STANDARD_REQUIRED YES
+    LINKER_LANGUAGE CXX
+)
 
 # Source groups for IDE organization
 SOURCE_GROUP("Header Files" FILES
@@ -33,8 +43,7 @@ SOURCE_GROUP("Source Files" FILES
 	${XPLIB_SOURCE_FILES}
 )
 SOURCE_GROUP("Resource" FILES
-    ${RESOURCE_FILE}
-	${XPLIB_PLATFORM_SOURCES}
+    ${XPLIB_PLATFORM_SOURCES}
 )
 SOURCE_GROUP("Tests" FILES
     DebugMain.cpp
@@ -42,41 +51,39 @@ SOURCE_GROUP("Tests" FILES
 
 # --------------------------------
 
-TARGET_COMPILE_DEFINITIONS(X-PlaneSceneryLibrary
+TARGET_COMPILE_DEFINITIONS(XPSceneryLib
     PUBLIC
 		UNICODE
 		_UNICODE
 		_CRT_SECURE_NO_WARNINGS
-        XPdata
 		$<$<CONFIG:Debug>:_CONSOLE>
 		$<$<CONFIG:Debug>:_DEBUG>
         $<$<CONFIG:Debug>:SEDX_DEBUG>
         $<$<CONFIG:Release>:SEDX_RELEASE>
 )
 
-TARGET_INCLUDE_DIRECTORIES(X-PlaneSceneryLibrary
+TARGET_INCLUDE_DIRECTORIES(XPSceneryLib
 	PUBLIC
-		${CMAKE_SOURCE_DIR}/xplib/includes
+        ${CMAKE_CURRENT_SOURCE_DIR}/xplib/includes
 	PRIVATE
-		${CMAKE_SOURCE_DIR}
-		${CMAKE_SOURCE_DIR}/xplib/src
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/xplib/src
 )
 
 # Ensure consistent UTF-8 source decoding on MSVC (prevents fmt / Unicode warnings)
 IF (MSVC)
-	TARGET_COMPILE_OPTIONS(xMath PRIVATE /utf-8)
+    TARGET_COMPILE_OPTIONS(XPSceneryLib PRIVATE /utf-8)
 ENDIF()
 
 # --------------------------------
 
 # Set output directory
-SET_TARGET_PROPERTIES(X-PlaneSceneryLibrary PROPERTIES
-    OUTPUT_NAME "X-PlaneSceneryLibrary"
+SET_TARGET_PROPERTIES(XPSceneryLib PROPERTIES
+    OUTPUT_NAME "XPSceneryLib"
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
     ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 )
-
 
 IF (WIN32)
     FIND_PACKAGE(Python3 COMPONENTS Interpreter REQUIRED)
@@ -87,7 +94,7 @@ IF (WIN32)
     IF (MSVC)
         # PRE_BUILD supported by Visual Studio
         ADD_CUSTOM_COMMAND(
-            TARGET X-PlaneSceneryLibrary
+            TARGET XPSceneryLib
             PRE_BUILD
             COMMAND ${Python3_EXECUTABLE} ${XPLIB_VERSION_SCRIPT}
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
@@ -103,7 +110,7 @@ IF (WIN32)
             VERBATIM
             BYPRODUCTS ${CMAKE_SOURCE_DIR}/source/resource.h
         )
-        ADD_DEPENDENCIES(X-PlaneSceneryLibrary IncrementXPlaneSceneryLibraryVersion)
+        ADD_DEPENDENCIES(XPSceneryLib IncrementXPlaneSceneryLibraryVersion)
     ENDIF()
 ENDIF()
 
