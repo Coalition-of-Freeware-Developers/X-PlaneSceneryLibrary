@@ -5,10 +5,10 @@
 #define XPLANE_LIBRARY_MAJOR            0
 #define XPLANE_LIBRARY_MINOR            0
 #define XPLANE_LIBRARY_PATCH            01
-#define XPLANE_LIBRARY_BUILD            100
+#define XPLANE_LIBRARY_BUILD            101
 //----------------------------------------------------------------------------
-#define XPLANE_LIB_VERSION_STRING   	"0.0.1.100"
-#define XPLANE_LIB_VERSION          	0x0000010064
+#define XPLANE_LIB_VERSION_STRING   	"0.0.1.101"
+#define XPLANE_LIB_VERSION          	0x0000010065
 #define XPLANE_LIB_FILE_VERSION     	XPLANE_LIBRARY_MAJOR,XPLANE_LIBRARY_MINOR,XPLANE_LIBRARY_PATCH,XPLANE_LIBRARY_BUILD
 //----------------------------------------------------------------------------
 // Resource IDs
