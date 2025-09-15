@@ -136,12 +136,12 @@ IF(TARGET XPSceneryLib)
 	INCLUDE(GNUInstallDirs)
 	TARGET_INCLUDE_DIRECTORIES(XPSceneryLib
 	  PUBLIC
-	    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/XPSceneryLib/includes;${CMAKE_CURRENT_SOURCE_DIR}>
+	    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/xplib/includes;${CMAKE_CURRENT_SOURCE_DIR}>
 	    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 	)
 	# Ensure no absolute source paths leak into INTERFACE includes
 	SET_PROPERTY(TARGET XPSceneryLib PROPERTY INTERFACE_INCLUDE_DIRECTORIES
-	  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/XPSceneryLib/includes;${CMAKE_CURRENT_SOURCE_DIR}>;$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
+	  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/xplib/includes;${CMAKE_CURRENT_SOURCE_DIR}>;$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 	# Provide a namespaced alias for consumers
 	IF(NOT TARGET XPSceneryLib::XPSceneryLib)
 		ADD_LIBRARY(XPSceneryLib::XPSceneryLib ALIAS XPSceneryLib)
@@ -211,7 +211,7 @@ IF(XPSceneryLib_INSTALL)
 	INCLUDE(GNUInstallDirs)
 	INCLUDE(CMakePackageConfigHelpers)
 
-	SET(XPSceneryLib_INSTALL_CONFIG_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/XPSceneryLib")
+	SET(XPSceneryLib_INSTALL_CONFIG_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/xplib")
 
 	# Install the library target and headers
 	INSTALL(TARGETS XPSceneryLib
@@ -222,12 +222,12 @@ IF(XPSceneryLib_INSTALL)
 	  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 	)
 
-	INSTALL(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/XPSceneryLib/includes/
-	        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/XPSceneryLib)
+	INSTALL(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/xplib/includes/
+	        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/xplib)
 
-	# Also install configuration headers used by consumers (e.g., XPSceneryLib/config/XPSceneryLib_config.h)
-	INSTALL(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/XPSceneryLib/config/
-	        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/XPSceneryLib/config
+	# Also install configuration headers used by consumers (e.g., xplib/config/xplib_config.h)
+	INSTALL(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/xplib/config/
+	        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/xplib/config
 	        FILES_MATCHING PATTERN "*.h")
 
 	INSTALL(EXPORT XPSceneryLibTargets

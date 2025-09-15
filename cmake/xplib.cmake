@@ -5,12 +5,12 @@
 MESSAGE(STATUS "=================================================")
 MESSAGE(STATUS "Generating X-Plane Scenery Library Project")
 
-FILE(GLOB XPLIB_HEADER_FILES *.h *.hpp)
-FILE(GLOB XPLIB_SOURCE_FILES *.cpp)
-SET(XPLIB_PLATFORM_SOURCES)
 IF(WIN32)
     LIST(APPEND XPLIB_PLATFORM_SOURCES ${CMAKE_SOURCE_DIR}/xplib/config/X-PlaneSceneryLibrary.rc)
 ENDIF()
+SET(XPLIB_PLATFORM_SOURCES)
+FILE(GLOB XPLIB_HEADER_FILES *.h *.hpp)
+FILE(GLOB XPLIB_SOURCE_FILES *.cpp)
 
 # --------------------------------
 
@@ -21,6 +21,11 @@ ADD_LIBRARY(X-PlaneSceneryLibrary
 	${XPLIB_PLATFORM_SOURCES}
 
 )
+
+# Use project-wide C++20 standard (required for <format> etc.)
+SET_TARGET_PROPERTIES(X-PlaneSceneryLibrary PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED YES)
+
+# Source groups for IDE organization
 SOURCE_GROUP("Header Files" FILES
 	${XPLIB_HEADER_FILES}
 )
@@ -39,12 +44,39 @@ SOURCE_GROUP("Tests" FILES
 
 TARGET_COMPILE_DEFINITIONS(X-PlaneSceneryLibrary
     PUBLIC
+		UNICODE
+		_UNICODE
+		_CRT_SECURE_NO_WARNINGS
         XPdata
+		$<$<CONFIG:Debug>:_CONSOLE>
+		$<$<CONFIG:Debug>:_DEBUG>
         $<$<CONFIG:Debug>:SEDX_DEBUG>
         $<$<CONFIG:Release>:SEDX_RELEASE>
 )
 
+TARGET_INCLUDE_DIRECTORIES(X-PlaneSceneryLibrary
+	PUBLIC
+		${CMAKE_SOURCE_DIR}/xplib/includes
+	PRIVATE
+		${CMAKE_SOURCE_DIR}
+		${CMAKE_SOURCE_DIR}/xplib/src
+)
+
+# Ensure consistent UTF-8 source decoding on MSVC (prevents fmt / Unicode warnings)
+IF (MSVC)
+	TARGET_COMPILE_OPTIONS(xMath PRIVATE /utf-8)
+ENDIF()
+
 # --------------------------------
+
+# Set output directory
+SET_TARGET_PROPERTIES(X-PlaneSceneryLibrary PROPERTIES
+    OUTPUT_NAME "X-PlaneSceneryLibrary"
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+    ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+)
+
 
 IF (WIN32)
     FIND_PACKAGE(Python3 COMPONENTS Interpreter REQUIRED)
