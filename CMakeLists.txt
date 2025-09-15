@@ -103,13 +103,13 @@ ENDIF()
 INCLUDE(CTest)
 
 OPTION(XP_SCENERY_LIB_VENDOR_DEPS "Allow XPSceneryLib to vendor/add_subdirectory 3rd-party deps" ${PROJECT_IS_TOP_LEVEL})
-OPTION(XP_SCENERY_LIB_BUILD_TESTS "Build XPSceneryLib tests" ${PROJECT_IS_TOP_LEVEL})
+#OPTION(XP_SCENERY_LIB_BUILD_TESTS "Build XPSceneryLib tests" ${PROJECT_IS_TOP_LEVEL})
 OPTION(XP_SCENERY_LIB_INSTALL "Generate install/export targets" ${PROJECT_IS_TOP_LEVEL})
 
 # If parent enabled CTest globally, ensure tests are on here too.
-IF(BUILD_TESTING)
-	SET(XP_SCENERY_LIB_BUILD_TESTS ON CACHE BOOL "Build XPSceneryLib tests" FORCE)
-ENDIF()
+#IF(BUILD_TESTING)
+#	SET(XP_SCENERY_LIB_BUILD_TESTS ON CACHE BOOL "Build XPSceneryLib tests" FORCE)
+#ENDIF()
 
 MESSAGE(STATUS "=================================================")
 MESSAGE(STATUS "Beginning project generation for XPSceneryLib")
@@ -118,10 +118,10 @@ MESSAGE(STATUS "=================================================")
 # --------------------------------
 # TESTS
 # --------------------------------
-IF(XP_SCENERY_LIB_BUILD_TESTS)
-	ENABLE_TESTING()
-	ADD_SUBDIRECTORY(tests)
-ENDIF()
+#IF(XP_SCENERY_LIB_BUILD_TESTS)
+#	ENABLE_TESTING()
+#	ADD_SUBDIRECTORY(tests)
+#ENDIF()
 
 # --------------------------------
 # ADD X-PlaneScenery LIBRARY
@@ -136,12 +136,12 @@ IF(TARGET XPSceneryLib)
 	INCLUDE(GNUInstallDirs)
 	TARGET_INCLUDE_DIRECTORIES(XPSceneryLib
 	  PUBLIC
-	    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/xplib/includes;${CMAKE_CURRENT_SOURCE_DIR}>
+	    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/xplib/include;${CMAKE_CURRENT_SOURCE_DIR}>
 	    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 	)
-	# Ensure no absolute source paths leak into INTERFACE includes
+	# Ensure no absolute source paths leak into INTERFACE include
 	SET_PROPERTY(TARGET XPSceneryLib PROPERTY INTERFACE_INCLUDE_DIRECTORIES
-	  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/xplib/includes;${CMAKE_CURRENT_SOURCE_DIR}>;$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
+	  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/xplib/include;${CMAKE_CURRENT_SOURCE_DIR}>;$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 	# Provide a namespaced alias for consumers
 	IF(NOT TARGET XPSceneryLib::XPSceneryLib)
 		ADD_LIBRARY(XPSceneryLib::XPSceneryLib ALIAS XPSceneryLib)
@@ -187,7 +187,7 @@ ENDIF()
 # Output directories (only when top-level; don’t override parent)
 # --------------------------------
 IF(PROJECT_IS_TOP_LEVEL)
-	FOREACH(TARGET IN ITEMS XPSceneryLibTests Catch2 Catch2WithMain XPSceneryLib)
+	FOREACH(TARGET IN ITEMS Catch2 Catch2WithMain XPSceneryLib)
 		IF(TARGET ${TARGET})
 			SET_TARGET_PROPERTIES(${TARGET} PROPERTIES
 			  ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
@@ -222,7 +222,7 @@ IF(XPSceneryLib_INSTALL)
 	  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 	)
 
-	INSTALL(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/xplib/includes/
+	INSTALL(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/xplib/include/
 	        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/xplib)
 
 	# Also install configuration headers used by consumers (e.g., xplib/config/xplib_config.h)

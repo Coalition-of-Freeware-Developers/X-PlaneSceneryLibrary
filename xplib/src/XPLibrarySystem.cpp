@@ -1,14 +1,14 @@
-//Module:	XPLibrarySystem
+﻿//Module:	XPLibrarySystem
 //Author:	Connor Russell
 //Date:		10/12/2024 2:32:18 PM
 //Purpose:	Implements XPLibrarySystem.h
-#include "XPLibrarySystem.h"
-#include "TextUtils.h"
 #include <algorithm>
 #include <fstream>
 #include <map>
 #include <ranges>
 #include <sstream>
+#include <xplib/include/TextUtils.h>
+#include <xplib/include/XPLibrarySystem.h>
 
 
 namespace fs = std::filesystem; //I'm lazy, so less typing

@@ -1,9 +1,9 @@
-//Module:	XPLayerGroups
+﻿//Module:	XPLayerGroups
 //Author:	Connor Russell
 //Date:		10/11/2024 7:39:11 PM
 //Purpose:	Implements XPLayerGroups.h
-#include "XPLayerGroups.h"
-#include "TextUtils.h"
+#include <xplib/include/TextUtils.h>
+#include <xplib/include/XPLayerGroups.h>
 
 const int XPLayerGroups::TERRAIN = 5;
 const int XPLayerGroups::BEACHES = 16;

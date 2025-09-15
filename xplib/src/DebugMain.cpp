@@ -7,7 +7,7 @@
 /* #pragma once
 
 //Include necessary headers
-#include "XPLibrarySystem.h"
+#include <xplib/include/XPLibrarySystem.h>
 
 Main function
 int main()

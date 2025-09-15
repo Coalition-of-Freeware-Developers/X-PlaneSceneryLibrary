@@ -1,25 +1,25 @@
-//Module:	XPLibrarySystem
+﻿//Module:	XPLibrarySystem
 //Author:	Connor Russell
 //Date:		10/12/2024 2:32:10 PM
 //Purpose:
 
 #pragma once
-#include "XPLibraryPath.h"
 #include <filesystem>
 #include <map>
 #include <string>
-#include <vector> 
+#include <vector>
+#include <xplib/include/XPLibraryPath.h>
 
 namespace XPLibrary
 {
-	
+
 	class VirtualFileSystem
 	{
 	private:
 	    ///vPaths - A vector of VirtualPaths
 	    std::vector<Definition> vctDefinitions;
 	    std::map<std::string, Region> mRegions;
-	
+
 	public:
 	    /**
 	     * @brief LoadFileSystem - Loads the files from the Library.txt and real paths into the vPaths vector
@@ -31,7 +31,7 @@ namespace XPLibrary
 	    void LoadFileSystem(const std::filesystem::path &InXpRootPath,
                             const std::filesystem::path &InCurrentPackagePath, const std::vector<std::filesystem::path>
                             &InCustomSceneryPacks);
-	
+
 	    /**
 	     * @brief GetDefinition - Returns the definition of a given path
 		 *
@@ -39,7 +39,7 @@ namespace XPLibrary
 		 * @returns The definition of the given path
 	     */
 	    Definition GetDefinition(const std::string &InPath);
-	
+
 	    /**
 	     * @brief GetRegion - Returns the region of a given path
 		 *

@@ -1,11 +1,11 @@
-//Module:	XPObj
+﻿//Module:	XPObj
 //Author:	Connor Russell
 //Date:		10/11/2024 7:11:58 PM
 //Purpose:	Implements XPObj.h
-#include "XPObj.h"
-#include "TextUtils.h"
 #include <fstream>
 #include <sstream>
+#include <xplib/include/TextUtils.h>
+#include <xplib/include/XPObj.h>
 
 /**
 * @brief Loads the object

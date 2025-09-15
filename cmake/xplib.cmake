@@ -12,8 +12,8 @@ ENDIF()
 
 # Discover headers and sources from project subfolders
 FILE(GLOB_RECURSE XPLIB_HEADER_FILES
-    "${CMAKE_CURRENT_SOURCE_DIR}/xplib/includes/*.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/xplib/includes/*.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/xplib/include/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/xplib/include/*.hpp"
 )
 FILE(GLOB_RECURSE XPLIB_SOURCE_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/xplib/src/*.cpp"
@@ -64,7 +64,7 @@ TARGET_COMPILE_DEFINITIONS(XPSceneryLib
 
 TARGET_INCLUDE_DIRECTORIES(XPSceneryLib
 	PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/xplib/includes
+        ${CMAKE_CURRENT_SOURCE_DIR}/xplib/include
 	PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/xplib/src

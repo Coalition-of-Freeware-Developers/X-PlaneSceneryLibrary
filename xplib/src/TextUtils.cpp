@@ -1,11 +1,11 @@
-//Module:	Tokenizer
+﻿//Module:	Tokenizer
 //Author:	Connor Russell
 //Date:		10/8/2024 7:43:36 PM
 //Purpose:	Implements TextUtils.h
-#include "TextUtils.h"
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+#include <xplib/include/TextUtils.h>
 
 
 /**

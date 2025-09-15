@@ -4,8 +4,8 @@
 //Purpose:
 
 #pragma once
-#include "XPAsset.h"
-#include "XPLayerGroups.h"
+#include <xplib/include/XPAsset.h>
+#include <xplib/include/XPLayerGroups.h>
 
 namespace XPAsset
 {
@@ -19,7 +19,7 @@ namespace XPAsset
 	    size_t idxEnd;                             //Zero based end vertex to draw to
 	    int intLayerGroup{XPLayerGroups::OBJECTS}; //Layer group
 	    bool bDraped{false};                       //Is this draw call in the object draped?
-	
+
 	    //There theoretically could be other properties, but are not implemented here.
 	};
 
@@ -51,7 +51,7 @@ namespace XPAsset
 	    std::vector<size_t> Indices;           //Indices. These are zero based indicies of verticies
 	    std::vector<XPAsset::ObjDrawCall>
 	        DrawCalls; //These are draw calls that point to the indicies, and contain state data
-	
+
 	    //All paths are relative to the obj path
 	    std::filesystem::path pDrapedBaseTex;   //The draped base texture
 	    std::filesystem::path pDrapedNormalTex; //The draped normal texture. Material is typically in the alpha channel
@@ -60,9 +60,9 @@ namespace XPAsset
 	    bool bHasDrapedBaseTex{false};
 	    bool bHasDrapedNormalTex{false};   //Material is typically in the b/alpha channel
 	    bool bHasDrapedMaterialTex{false}; //Only set if the material is in a separate texture
-	
+
 	    void *Refcon; //A reference to an object that can be used to store additional data acociated with this object
-	
+
 	    /**
 	     * @brief Loads the object
 		 *
