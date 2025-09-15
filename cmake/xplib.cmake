@@ -88,8 +88,7 @@ SET_TARGET_PROPERTIES(XPSceneryLib PROPERTIES
 IF (WIN32)
     FIND_PACKAGE(Python3 COMPONENTS Interpreter REQUIRED)
 
-    # Script path
-    SET(XPLIB_VERSION_SCRIPT ${CMAKE_SOURCE_DIR}/scripts/increment_xplib_build.py)
+    SET(XPLIB_VERSION_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/scripts/increment_xplib_build.py)
 
     IF (MSVC)
         # PRE_BUILD supported by Visual Studio
@@ -97,7 +96,7 @@ IF (WIN32)
             TARGET XPSceneryLib
             PRE_BUILD
             COMMAND ${Python3_EXECUTABLE} ${XPLIB_VERSION_SCRIPT}
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             COMMENT "Incrementing X-Plane Scenery Library build number (resource.h)"
             VERBATIM
         )
@@ -105,10 +104,10 @@ IF (WIN32)
         # Fallback for other Windows generators
         ADD_CUSTOM_TARGET(IncrementXPlaneSceneryLibraryVersion
             COMMAND ${Python3_EXECUTABLE} ${XPLIB_VERSION_SCRIPT}
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             COMMENT "Incrementing X-Plane Scenery Library build number (resource.h)"
             VERBATIM
-            BYPRODUCTS ${CMAKE_SOURCE_DIR}/source/resource.h
+            BYPRODUCTS ${CMAKE_CURRENT_SOURCE_DIR}/xplib/config/resource.h
         )
         ADD_DEPENDENCIES(XPSceneryLib IncrementXPlaneSceneryLibraryVersion)
     ENDIF()
