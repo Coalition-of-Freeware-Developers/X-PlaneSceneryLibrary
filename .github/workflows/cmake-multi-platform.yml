@@ -27,21 +27,31 @@ jobs:
         uses: actions/checkout@v5
         with:
           submodules: recursive
+
       - name: Cache Core Build
         id: core-cache
         uses: actions/cache@v4
         with:
-          key: ${{ runner.os }}-${{ hashFiles('xplib/**', 'CMakeLists.txt', 'scripts/**', 'cmake/**', '.github/workflows/build.yml') }}
+          # Cache the CMake build directory at the repo root
+          path: |
+            build
+          # Include OS and relevant files so cache is properly scoped/invalidated
+          key: ${{ runner.os }}-cmake-Release-${{ hashFiles('CMakeLists.txt', 'cmake/**', 'xplib/**', 'scripts/**', '.github/workflows/cmake-multi-platform.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-cmake-Release-
+
       - name: Install ubuntu libraries
         if: matrix.os == 'ubuntu-latest' && steps.core-cache.outputs.cache-hit != 'true'
         run: |
           sudo apt update
           sudo apt install -y libgl1-mesa-dev libglx-dev
+
       - name: Run CMake
         if: steps.core-cache.outputs.cache-hit != 'true'
         run: |
           cmake -DCMAKE_OSX_ARCHITECTURES:STRING="x86_64;arm64" -DCMAKE_BUILD_TYPE=Release -S . -B build
           cmake --build build --parallel --config Release
+
       - name: Upload Core artifacts
         uses: actions/upload-artifact@v4
         with:
