@@ -56,6 +56,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: xplib
-          path: bin/${{ matrix.os }}
+          path: bin/
           if-no-files-found: 'error'
           overwrite: 'true'
