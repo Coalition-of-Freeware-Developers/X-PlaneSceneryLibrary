@@ -1,0 +1,51 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v**'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts to package as release assets
+        uses: actions/download-artifact@v4
+        with:
+          pattern: xplib*
+          merge-multiple: true
+          path: bin
+      - name: Prepare Files for Release
+        run: |
+          cd build
+          zip -r lin_x64.zip lin_x64
+          zip -r mac_x64.zip mac_x64
+          zip -r win_x64.zip win_x64
+      - name: Generate App token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.XPSLIB_RELEASE_APP_ID }}
+          private-key: ${{ secrets.XPLIB_RELEASE_APP_TOKEN }}
+      - name: Create/Update GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: X-PlaneSceneryLibrary-${{ github.ref_name }}
+          body: |
+            Automated release for X-PlaneSceneryLibrary-${{ github.ref_name }}.
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+          files: |
+            bin/*_x64.zip
+          fail_on_unmatched_files: true
+          token: ${{ steps.app-token.outputs.token }}
